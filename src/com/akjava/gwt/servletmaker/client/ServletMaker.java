@@ -11,7 +11,9 @@ import com.akjava.gwt.lib.client.ValueUtils;
 import com.akjava.gwt.lib.client.widget.PasteValueReceiveArea;
 import com.akjava.gwt.servletmaker.client.resources.Bundles;
 import com.akjava.lib.common.utils.ValuesUtils;
+import com.google.common.base.CharMatcher;
 import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.shared.GWT;
@@ -20,6 +22,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -40,7 +43,13 @@ public class ServletMaker implements EntryPoint {
 	 */
 	public void onModuleLoad() {
 		 VerticalPanel root=new VerticalPanel();
+		 
+		 RootPanel panel=RootPanel.get("gwtapp");
+		 if(panel!=null){
+			 panel.add(root);
+		 }else{
 		 RootPanel.get().add(root);
+		 }
 		 
 		 PasteValueReceiveArea test=new PasteValueReceiveArea();
 		 test.setStylePrimaryName("readonly");
@@ -57,12 +66,15 @@ public class ServletMaker implements EntryPoint {
 					return;
 				}
 				GWT.log(line);
-				String[] className_package=line.split(",");
+				//
+				CharMatcher matcher=CharMatcher.anyOf(",\t");
+				List<String> className_package=Lists.newArrayList(Splitter.on(matcher).split(line));
+				
 				String className="";
 				String packageName="";
-				className=className_package[0];
-				if(className_package.length>1){
-					packageName=className_package[1];
+				className=className_package.get(0);
+				if(className_package.size()>1){
+					packageName=className_package.get(1);
 				}
 				String csv=className+","+packageName+","+toServletName(className)+","+toPathValue(className);
 				input.setText(input.getText()+csv+"\n");
@@ -71,6 +83,7 @@ public class ServletMaker implements EntryPoint {
 			 
 		});
 		 
+		 root.add(new Label("Csv(comma or tab)"));
 		 input = new TextArea();
 		 GWTHTMLUtils.setPlaceHolder(input, "className,package,servletName,path");
 		 input.setSize("600px","200px");
