@@ -1,8 +1,8 @@
 package com.akjava.gwt.servletmaker.client;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import com.akjava.gwt.lib.client.Regexs;
 import com.akjava.gwt.lib.client.ValueUtils;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
@@ -21,7 +21,7 @@ public class TextToClassCsv {
 		if(lines.size()==1){
 			//parse one line
 			String line=lines.get(0);
-			if(line.toLowerCase().endsWith(".java")){
+			if(line.toLowerCase().endsWith(".java")){//care lower case
 				String className=line.substring(0,line.length()-5);
 				return className+",";
 			}else{
@@ -30,8 +30,8 @@ public class TextToClassCsv {
 		}else{
 			String packageName="";
 			String className="";
-			RegExp classPattern=RegExp.compile("class\\s+([a-zA-Z0-9_]+)");//gather it
-			RegExp packagePattern=RegExp.compile("package\\s+(.+);");//gather it
+			RegExp classPattern=RegExp.compile(Regexs.GET_CLASS_NAME);
+			RegExp packagePattern=RegExp.compile(Regexs.GET_PACKAGE_NAME);
 			for(String line:lines){
 				if(packageName.isEmpty()){
 				MatchResult  pmatch=packagePattern.exec(line);

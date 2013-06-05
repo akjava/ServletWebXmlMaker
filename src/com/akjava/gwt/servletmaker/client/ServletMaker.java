@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.akjava.gwt.common.functions.CsvToMapFunction;
+import com.akjava.gwt.common.functions.MapToTemplatedTextFunction;
 import com.akjava.gwt.lib.client.GWTHTMLUtils;
-import com.akjava.gwt.lib.client.LogUtils;
 import com.akjava.gwt.lib.client.ValueUtils;
+import com.akjava.gwt.lib.client.widget.PasteValueReceiveArea;
 import com.akjava.gwt.servletmaker.client.resources.Bundles;
 import com.akjava.lib.common.utils.ValuesUtils;
 import com.google.common.base.Joiner;
@@ -17,7 +19,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextArea;
@@ -142,60 +143,4 @@ public class ServletMaker implements EntryPoint {
 		output.setText(out);
 	}
 
-	//TODO move to common
-	/**
-	 * only work on Chrome(web-kit)
-	 * to catch new value add addValueChangeHandler
-	 * 
-	 * 	addValueChangeHandler(new ValueChangeHandler<String>() {
-				
-				@Override
-				public void onValueChange(ValueChangeEvent<String> event) {
-					GWT.log("changed:"+event.getValue());
-				}
-			});
-	 * ref
-	 * https://groups.google.com/forum/?fromgroups#!topic/google-web-toolkit/CaNSdwfSK-A
-	 * @author aki
-	 *
-	 */
-	public class PasteValueReceiveArea extends TextArea{
-		public PasteValueReceiveArea(){
-			super();
-			sinkEvents(Event.ONPASTE);
-			
-			setReadOnly(true);
-		}
-		public void onBrowserEvent(Event event) {
-		    super.onBrowserEvent(event);
-		    switch (event.getTypeInt()) {
-		        case Event.ONPASTE: {
-		        	LogUtils.log(event);
-		        	GWT.log("paste");
-		        	ValueChangeEvent.fire(this, getPastedText(event));
-		            break;
-		        }
-		    }
-		}
-	}
-	
-	public static native String getPastedText(Event event)
-    /*-{
-
-        var text = "";
-
-        if (event.clipboardData) // WebKit/Chrome/Safari
-        {
-            try
-            {
-                text = event.clipboardData.getData("Text");
-                return text;
-            }
-            catch (e)
-            {
-                // Hmm, that didn't work.
-            }
-        }
-        return text;
-        }-*/;
 }
