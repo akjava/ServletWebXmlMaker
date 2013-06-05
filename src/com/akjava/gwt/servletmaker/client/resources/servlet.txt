@@ -1,0 +1,7 @@
+<servlet-name>${name}</servlet-name>
+<servlet-class>${classfull}</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>${name}</servlet-name>
+<url-pattern>${path}</url-pattern>
+</servlet-mapping>
