@@ -1,0 +1,29 @@
+Only work on Chrome
+I created this for reduce time to modified web.xml.
+Actually modifying web.xml is old fashion.
+we should use more modern framework which don't need modify web.xml
+however it's easy this style for small apps.
+
+how to use.
+1 select all & copy your servlet java code.(technically it's only parse both package and class line);
+plus it's works text only classname.java  or classname
+2 paste to this app
+3 servlet xml was generated.
+
+
+example
+1.copy your java code
+package com.akjava.gwt.qualification.server.admin;
+..
+public class AdminIndexServlet extends  BaseServlet{
+..
+}
+
+3.generated xml
+<servlet-name>AdminIndex</servlet-name>
+<servlet-class>com.akjava.gwt.qualification.server.admin.AdminIndexServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>AdminIndex</servlet-name>
+<url-pattern>/adminindex</url-pattern>
+</servlet-mapping>
